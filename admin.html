@@ -2,23 +2,16 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Yardım Formu</title>
+  <title>Admin Paneli</title>
 </head>
 <body>
-  <h2>Yardım Talebi / Yardım Teklifi</h2>
+  <h2>Admin Paneli</h2>
 
-  <form id="yardimForm">
-    <input type="text" id="isim" placeholder="İsim" required><br><br>
-    <input type="text" id="telefon" placeholder="Telefon" required><br><br>
-    <textarea id="not" placeholder="Not" required></textarea><br><br>
+  <h3>Yardım Talepleri</h3>
+  <ul id="talepListesi"></ul>
 
-    <select id="tur">
-      <option value="talep">Yardım Talebi</option>
-      <option value="teklif">Yardım Teklifi</option>
-    </select><br><br>
-
-    <button type="submit">Gönder</button>
-  </form>
+  <h3>Yardım Teklifleri</h3>
+  <ul id="teklifListesi"></ul>
 
   <script src="script.js"></script>
 </body>
