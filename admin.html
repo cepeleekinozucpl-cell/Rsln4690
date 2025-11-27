@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Paneli</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        h1 {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            margin: 0 0 20px 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .item {
+            background: #eaeaea;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: left;
+        }
+        button {
+            margin-top: 10px;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .delete-btn {
+            background: red;
+            color: white;
+        }
+        .back-btn {
+            background: #007bff;
+            color: white;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Admin Paneli</h1>
+
+<button class="back-btn" onclick="window.location.href='index.html'">← Ana Sayfa</button>
+
+<div class="container">
+    <h2>Yardım Talepleri</h2>
+    <div id="needsList">Yükleniyor...</div>
+
+    <h2>Yardım Teklifleri</h2>
+    <div id="helpsList">Yükleniyor...</div>
+</div>
+
+<script>
+async function loadData() {
+    try {
+        const needs = await fetch("families.json").then(r => r.json());
+        const helps = await fetch("dernekler.json").then(r => r.json());
+
+        const needsList = document.getElementById("needsList");
+        const helpsList = document.getElementById("helpsList");
+
+        needsList.innerHTML = "";
+        helpsList.innerHTML = "";
+
+        needs.forEach((n, i)
