@@ -1,19 +1,30 @@
-document.getElementById("helpBtn").onclick = () => {
-    document.getElementById("formArea").innerHTML = `
-        <h2>Yardım Et</h2>
-        <input placeholder="Ad Soyad" />
-        <input placeholder="Telefon" />
-        <input placeholder="Nasıl yardımcı olacaksınız?" />
-        <button>Gönder</button>
-    `;
-};
+document.addEventListener("DOMContentLoaded", function () {
+    const familyList = document.getElementById("familyList");
+    const dernekList = document.getElementById("dernekList");
 
-document.getElementById("needBtn").onclick = () => {
-    document.getElementById("formArea").innerHTML = `
-        <h2>Yardım İste</h2>
-        <input placeholder="Ad Soyad" />
-        <input placeholder="Adres" />
-        <input placeholder="İhtiyacınız nedir?" />
-        <button>Gönder</button>
-    `;
-};
+    // Aileleri yükle
+    fetch("/families.json")  // ← DÜZELTİLDİ
+        .then(response => response.json())
+        .then(data => {
+            familyList.innerHTML = "";
+            data.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = `${item.name} - ${item.address} - ${item.phone}`;
+                familyList.appendChild(li);
+            });
+        })
+        .catch(error => console.error("Aile veri hatası:", error));
+
+    // Dernekleri yükle
+    fetch("/dernekler.json")  // ← DÜZELTİLDİ
+        .then(response => response.json())
+        .then(data => {
+            dernekList.innerHTML = "";
+            data.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = `${item.name} - ${item.contact}`;
+                dernekList.appendChild(li);
+            });
+        })
+        .catch(error => console.error("Dernek veri hatası:", error));
+});
