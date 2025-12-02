@@ -1,18 +1,70 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Paneli</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Admin Paneli</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h2>Admin Paneli</h2>
+  <header class="topbar"><h1>Admin Paneli</h1></header>
+  <div class="container">
+    <button onclick="location.href='/'" class="btn">← Ana Sayfa</button>
+    <div class="card">
+      <h2>Yardım Talepleri</h2>
+      <div id="requests">Yükleniyor...</div>
+    </div>
+    <div class="card">
+      <h2>Yardım Teklifleri</h2>
+      <div id="offers">Yükleniyor...</div>
+    </div>
+  </div>
 
-  <h3>Yardım Talepleri</h3>
-  <ul id="talepListesi"></ul>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+/* FIREBASE CONFIG - BURAYA kendi firebaseConfig objeni yapıştır */
+const firebaseConfig = {
+  apiKey: "API_KEY",
+  authDomain: "PROJECT.firebaseapp.com",
+  databaseURL: "https://PROJECT-default-rtdb.firebaseio.com",
+  projectId: "PROJECT",
+  storageBucket: "PROJECT.appspot.com",
+  messagingSenderId: "SENDER_ID",
+  appId: "APP_ID"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-  <h3>Yardım Teklifleri</h3>
-  <ul id="teklifListesi"></ul>
+// basit admin check
+if(localStorage.getItem('isAdmin') !== '1'){
+  alert('Admin olarak giriş yapmalısınız.');
+  window.location.href = '/login.html';
+}
 
-  <script src="script.js"></script>
+function renderList(node, elId){
+  db.ref(node).on('value', snap=>{
+    const data = snap.val();
+    const el = document.getElementById(elId);
+    if(!data){ el.innerHTML = '<i>Henüz kayıt yok</i>'; return; }
+    const html = Object.keys(data).reverse().map(k=>{
+      const it = data[k];
+      return `<div class="item"><b>${it.name||'Anonim'}</b> - ${it.text||''}
+        <div class="muted">${new Date(it.t||0).toLocaleString()}</div>
+        <button onclick="deleteKey('${node}','${k}')" class="small">Sil</button>
+      </div>`;
+    }).join('');
+    el.innerHTML = html;
+  });
+}
+
+function deleteKey(node,k){
+  if(!confirm('Silinsin mi?')) return;
+  db.ref(node + '/' + k).remove();
+}
+
+renderList('requests','requests');
+renderList('offers','offers');
+</script>
 </body>
 </html>
